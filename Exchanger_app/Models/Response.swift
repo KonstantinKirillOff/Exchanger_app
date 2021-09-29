@@ -5,23 +5,50 @@
 //  Created by Константин Кириллов on 26.09.2021.
 //
 
-struct ExchangeResponse: Decodable {
+import Foundation
+
+struct ExchangeResponse: Codable {
     let meta: MetaData
-    let response: ResponseData
+    let response: ResponseDataConvertation
 }
 
-struct MetaData: Decodable {
+struct MetaData: Codable {
     let code: Int
     let disclaimer: String
 }
 
-struct ResponseData: Decodable {
-    let timestamp: Int
-    let date: String
-    let from: String
-    let to: String
-    let amount: Float
-    let value: Float
+struct ResponseDataConvertation: Codable {
+    let dateRequest: String?
+    let currencyFrom: String?
+    let currencyTo: String?
+    let amount: Float?
+    let totalAfterConversation: Double?
+    
+    init() {
+        dateRequest = ""
+        currencyFrom = ""
+        currencyTo = ""
+        amount = 0
+        totalAfterConversation = 0
+    }
+    
+    init(conversationData: [String: Any]) {
+        dateRequest = conversationData["date"] as? String
+        currencyFrom = conversationData["from"] as? String
+        currencyTo = conversationData["to"] as? String
+        amount = conversationData["amount"] as? Float
+        totalAfterConversation = conversationData["value"] as? Double
+    }
+    
+    static func getResponseDataConvertation(from value: Any) -> ResponseDataConvertation {
+        guard let exchangeResponse = value as? [String: Any] else { return ResponseDataConvertation() }
+        guard let responseData = exchangeResponse["response"] as? [String: Any] else { return ResponseDataConvertation() }
+        
+        return ResponseDataConvertation(conversationData: responseData)
+    }
 }
+
+
+
 
 

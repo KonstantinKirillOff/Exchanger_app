@@ -13,32 +13,22 @@ class ViewController: UIViewController {
     @IBOutlet weak var currencyToTF: UITextField!
     @IBOutlet weak var amountTF: UITextField!
     @IBOutlet weak var resultTF: UILabel!
-    
 
     @IBAction func convertation() {
-        fetchCurrencyRate()
-    }
-    
-    private func fetchCurrencyRate() {
-        let urlForFetch = "https://api.currencyscoop.com/v1/convert?api_key=ab6104253078d5f620a5d9e3604df589&from=\(currencyFromTF.text?.uppercased() ?? "")&to=\(currencyToTF.text?.uppercased() ?? "")&amount=\(amountTF.text?.uppercased() ?? "")"
+        let parameters = ["from": currencyFromTF.text?.uppercased() ?? "",
+                          "to": currencyToTF.text?.uppercased() ?? "",
+                          "amount": amountTF.text ?? ""]
         
-        guard let url = URL(string: urlForFetch) else { return }
+        let url = NetworkManager.shared.getURLWithParameters(from: Link.ConvertationCurrency.rawValue, with: parameters)
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else {
-                return
+        NetworkManager.shared.fetchConversationData(fromURL: url) { result in
+            switch result {
+            case .success(let response):
+                self.resultTF.text = "\(response.amount ?? 0) \(response.currencyFrom ?? "") в валюте \(response.currencyTo ?? "") составит \(String(format: "%.2f", response.totalAfterConversation ?? 0)) на \(response.dateRequest ?? "")"
+            case .failure(let error):
+                print(error)
             }
-            
-            do {
-                let responseFromServer = try JSONDecoder().decode(ExchangeResponse.self, from: data)
-                DispatchQueue.main.async {
-                    self.resultTF.text = String(format: "%.2f", responseFromServer.response.value)
-                }
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        }.resume()
+        }
     }
-    
 }
 

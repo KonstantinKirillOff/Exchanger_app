@@ -135,12 +135,12 @@
 		B5EC062926FE1F6800089D13 /* Exchanger_app */ = {
 			isa = PBXGroup;
 			children = (
-				B5C0BDD02701CBBB001DCDD6 /* Resources */,
 				B5C0BDCE2701CB85001DCDD6 /* ViewControllers */,
-				B5C0BDCF2701CB9E001DCDD6 /* StoryBoards */,
-				B5C0BDCD2701CB5A001DCDD6 /* App */,
-				B5C0BDD12701CBD9001DCDD6 /* Models */,
 				B5C0BDD42701CD97001DCDD6 /* Networkings */,
+				B5C0BDD12701CBD9001DCDD6 /* Models */,
+				B5C0BDCF2701CB9E001DCDD6 /* StoryBoards */,
+				B5C0BDD02701CBBB001DCDD6 /* Resources */,
+				B5C0BDCD2701CB5A001DCDD6 /* App */,
 			);
 			path = Exchanger_app;
 			sourceTree = "<group>";
