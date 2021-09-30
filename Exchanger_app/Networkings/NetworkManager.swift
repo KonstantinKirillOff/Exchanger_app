@@ -30,7 +30,6 @@ class NetworkManager {
 
     func getURLWithParameters(from baseURL: String, with parameters:[String: String]) -> String {
         var fullURLString = "\(baseURL)?api_key=\(apiKey)"
-
         for parametr in parameters {
             fullURLString += "&\(parametr.key)=\(parametr.value)"
         }
